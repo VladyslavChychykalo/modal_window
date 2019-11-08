@@ -1,43 +1,39 @@
-import React, { Component, createRef } from 'react';
-import { backdrop, modal } from './Modal.module.css';
+import React, { Component } from 'react';
+import ModalWindow from './ModalWindow/ModalWindow';
 
-export default class Modal extends Component {
-  backdropRef = createRef();
+export default class App extends Component {
+  state = { isModalOpen: false };
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyPress);
-  }
+  openModal = () =>
+    this.setState({
+      isModalOpen: true,
+    });
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyPress);
-  }
-
-  handleKeyPress = e => {
-    if (e.code !== `Escape`) return;
-
-    this.props.onClose();
-  };
-
-  handleBackdropClick = e => {
-    const { current } = this.backdropRef;
-
-    if (current && e.target !== current) return;
-
-    this.props.onClose();
-
-    // console.log(e.target);
-    // console.log(this.backdropRef);
-  };
+  closeModal = () =>
+    this.setState({
+      isModalOpen: false,
+    });
 
   render() {
     return (
-      <div
-        className={backdrop}
-        ref={this.backdropRef}
-        onClick={this.handleBackdropClick}
-      >
-        <div className={modal}>{this.props.children}</div>
+      <div>
+        <button onClick={this.openModal}>Open</button>
+        {this.state.isModalOpen && (
+          <ModalWindow onClose={this.closeModal}>
+            <h1>Modal Content</h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil,
+              saepe!
+            </p>
+            <button onClick={this.closeModal}>Close</button>
+          </ModalWindow>
+        )}
       </div>
     );
   }
+  // toggleModal = () => {
+  //   this.setState(state => ({
+  //     isModalOpen: !state.isModalOpen,
+  //   }));
+  // }
 }

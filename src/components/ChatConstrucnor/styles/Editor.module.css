@@ -1,0 +1,9 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  font: inherit;
+  padding: 8px;
+}
